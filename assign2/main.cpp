@@ -31,6 +31,18 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  */
 std::set<std::string> get_applicants(std::string filename) {
   // STUDENT TODO: Implement this function.
+  std::ifstream input_file(filename);
+  if (!input_file.is_open()) {
+    std::cerr << "Error opening file: " << filename << std::endl;
+    return {};
+  }
+
+  std::set<std::string> applicants;
+  std::string name;
+  for (std::string name; std::getline(input_file, name);) {
+    applicants.insert(name);
+  }
+  return applicants;
 }
 
 /**
@@ -43,6 +55,13 @@ std::set<std::string> get_applicants(std::string filename) {
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
   // STUDENT TODO: Implement this function.
+  std::queue<const std::string*> matches;
+  for (const std::string& student : students) {
+    if (student[0] == name[0]) {
+      matches.push(&student);
+    }
+  }
+  return matches;
 }
 
 /**
@@ -57,6 +76,18 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  */
 std::string get_match(std::queue<const std::string*>& matches) {
   // STUDENT TODO: Implement this function.
+  if (matches.empty()) {
+    return "NO MATCHES FOUND.";
+  }
+  size_t size = matches.size();
+  size_t random_index = std::rand() % size;
+  for (size_t i = 0; i < random_index; ++i) {
+    matches.pop();
+  }
+  std::string match = *matches.front();
+  matches.pop();
+
+  return match;
 }
 
 /* #### Please don't modify this call to the autograder! #### */
